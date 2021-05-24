@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SwitchListItem extends StatelessWidget {
-  final String title;
-  final String description;
-  final bool isSelected;
-  final Function updateSwitch;
+  final String? title;
+  final String? description;
+  final bool? isSelected;
+  final Function? updateSwitch;
   SwitchListItem(
       {this.title, this.description, this.isSelected, this.updateSwitch});
 
@@ -27,7 +27,7 @@ class SwitchListItem extends StatelessWidget {
             color: Colors.grey,
           ),
         ),
-        value: isSelected,
-        onChanged: updateSwitch);
+        value: isSelected!,
+        onChanged: updateSwitch as void Function(bool)?);
   }
 }

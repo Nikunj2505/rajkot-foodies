@@ -8,9 +8,9 @@ class CategoriesListItems extends StatelessWidget {
   final Color color;
 
   CategoriesListItems(
-      {@required this.id, @required this.title, @required this.color});
+      {required this.id, required this.title, required this.color});
 
-  void openCategoriesMealsScreen({BuildContext ctx}) {
+  void openCategoriesMealsScreen({required BuildContext ctx}) {
     Navigator.pushNamed(ctx, CategoriesMealsScreen.route, arguments: {
       CategoriesMealsScreen.categoryId: id,
       CategoriesMealsScreen.categoryTitle: title

@@ -10,7 +10,7 @@ class FavoriteProviders with ChangeNotifier {
     return [..._favoriteMeals];
   }
 
-  void toggleFavorite(String mealId) {
+  void toggleFavorite(String? mealId) {
     var favoriteIndex = _favoriteMeals.indexWhere((meal) => meal.id == mealId);
     if (favoriteIndex >= 0) {
       _favoriteMeals.removeAt(favoriteIndex);

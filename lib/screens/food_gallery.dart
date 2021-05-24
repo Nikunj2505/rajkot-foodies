@@ -12,7 +12,7 @@ import '../widgets/main_drawer.dart';
 class FoodGallery extends StatelessWidget {
   static const String route = "/food-gallery";
 
-  const FoodGallery({Key key}) : super(key: key);
+  const FoodGallery({Key? key}) : super(key: key);
 
   void _chooseFile(BuildContext ctx) {
     showDialog(
@@ -145,7 +145,7 @@ class FoodGallery extends StatelessWidget {
               : Consumer<FoodGalleryProvider>(
                   builder: (ctx, value, ch) =>
                       (value != null && value.foodItems.length <= 0)
-                          ? ch
+                          ? ch!
                           : GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithMaxCrossAxisExtent(

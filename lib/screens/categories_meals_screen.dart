@@ -16,9 +16,9 @@ class CategoriesMealsScreen extends StatelessWidget {
         Provider.of<FilterMealsProviders>(context, listen: false).meals;
 
     var arguments =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final String categoryId = arguments[CategoriesMealsScreen.categoryId];
-    final String categoryTitle = arguments[CategoriesMealsScreen.categoryTitle];
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final String? categoryId = arguments[CategoriesMealsScreen.categoryId];
+    final String categoryTitle = arguments[CategoriesMealsScreen.categoryTitle]!;
 
     final mealList = meals.where((mealItem) {
       return mealItem.categories.contains(categoryId);

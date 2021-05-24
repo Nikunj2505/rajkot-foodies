@@ -5,9 +5,9 @@ import '../screens/filters.dart';
 import '../screens/food_gallery.dart';
 
 class MainDrawer extends StatelessWidget {
-  Widget _showTiles({String title, IconData icon, Function fun}) {
+  Widget _showTiles({required String title, IconData? icon, Function? fun}) {
     return ListTile(
-      onTap: fun,
+      onTap: fun as void Function()?,
       leading: Icon(
         icon,
         size: 25,

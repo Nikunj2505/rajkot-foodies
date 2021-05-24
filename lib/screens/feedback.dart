@@ -34,8 +34,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   void _submitFeedback(BuildContext context) {
     // close keyboard
-    FocusManager.instance.primaryFocus.unfocus();
-    if (_formKey.currentState.validate()) {
+    FocusManager.instance.primaryFocus!.unfocus();
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _nameController.text = '';
         _feedbackController.text = '';
@@ -67,7 +67,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               children: [
                 TextFormField(
                   validator: (value) {
-                    if (value.trim().isEmpty) {
+                    if (value!.trim().isEmpty) {
                       return 'Please enter your name';
                     }
                     return null;
@@ -92,7 +92,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 TextFormField(
                   validator: (value) {
-                    if (value.trim().isEmpty) {
+                    if (value!.trim().isEmpty) {
                       return 'Please give some feedback!';
                     }
                     return null;

@@ -40,14 +40,14 @@ class MealsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String mealId = ModalRoute.of(context).settings.arguments as String;
+    String? mealId = ModalRoute.of(context)!.settings.arguments as String?;
     Meal selectedMealItem = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMealItem.title}'),
       ),
       floatingActionButton: Consumer<FavoriteProviders>(
-        builder: (BuildContext context, favoriteProvider, Widget child) =>
+        builder: (BuildContext context, favoriteProvider, Widget? child) =>
             FloatingActionButton(
           child:
               (favoriteProvider.favoriteMeals.any((meal) => meal.id == mealId))

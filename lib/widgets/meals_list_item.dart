@@ -14,12 +14,12 @@ class MealsListItem extends StatelessWidget {
   final Complexity complexity;
 
   MealsListItem({
-    @required this.id,
-    @required this.imageUrl,
-    @required this.title,
-    @required this.duration,
-    @required this.affordability,
-    @required this.complexity,
+    required this.id,
+    required this.imageUrl,
+    required this.title,
+    required this.duration,
+    required this.affordability,
+    required this.complexity,
   });
 
   final circularWidget = BorderRadius.circular(15);
