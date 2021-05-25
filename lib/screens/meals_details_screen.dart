@@ -6,7 +6,7 @@ import '../dummy_data.dart';
 import '../providers/favorite_providers.dart';
 
 class MealsDetailsScreen extends StatelessWidget {
-  static const route = '/meal-details';
+  static const routeName = '/meal-details';
 
   Widget spacingBetweenWidgets() {
     return const SizedBox(

@@ -6,7 +6,7 @@ import '../widgets/main_drawer.dart';
 import '../widgets/switch_list_item.dart';
 
 class FiltersScreen extends StatefulWidget {
-  static const route = '/filters';
+  static const routeName = '/filters';
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
 }

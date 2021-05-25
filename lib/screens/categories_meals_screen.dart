@@ -6,7 +6,7 @@ import '../providers/filter_meals_providers.dart';
 import '../widgets/meals_list_item.dart';
 
 class CategoriesMealsScreen extends StatelessWidget {
-  static const route = '/categories-meals';
+  static const routeName = '/categories-meals';
   static const categoryId = 'meals_id';
   static const categoryTitle = 'meals_title';
 
@@ -18,7 +18,8 @@ class CategoriesMealsScreen extends StatelessWidget {
     var arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final String? categoryId = arguments[CategoriesMealsScreen.categoryId];
-    final String categoryTitle = arguments[CategoriesMealsScreen.categoryTitle]!;
+    final String categoryTitle =
+        arguments[CategoriesMealsScreen.categoryTitle]!;
 
     final mealList = meals.where((mealItem) {
       return mealItem.categories.contains(categoryId);

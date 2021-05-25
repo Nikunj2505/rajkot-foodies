@@ -1,10 +1,27 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../providers/auth_provider.dart';
 import '../screens/feedback.dart';
 import '../screens/filters.dart';
 import '../screens/food_gallery.dart';
 
 class MainDrawer extends StatelessWidget {
+  Future<String?> getUserEmail() async {
+    final pref = await SharedPreferences.getInstance();
+    if (pref.containsKey('userData')) {
+      final data = pref.getString('userData');
+      if (data != null) {
+        final info = jsonDecode(data) as Map<String, dynamic>;
+        return info['email'];
+      }
+    }
+    return null;
+  }
+
   Widget _showTiles({required String title, IconData? icon, Function? fun}) {
     return ListTile(
       onTap: fun as void Function()?,
@@ -35,13 +52,18 @@ class MainDrawer extends StatelessWidget {
             height: 150,
             padding: const EdgeInsets.all(15),
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Enjoy your Foods!',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
+            child: FutureBuilder(
+              future: getUserEmail(),
+              builder: (BuildContext ctx, AsyncSnapshot<String?> snapshot) {
+                return Text(
+                  'Enjoy your Foods! \n${snapshot.data}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                );
+              },
             ),
           ),
           _showTiles(
@@ -60,7 +82,7 @@ class MainDrawer extends StatelessWidget {
             fun: () {
               Navigator.pushReplacementNamed(
                 context,
-                FiltersScreen.route,
+                FiltersScreen.routeName,
               );
             },
           ),
@@ -70,7 +92,7 @@ class MainDrawer extends StatelessWidget {
             fun: () {
               Navigator.pushReplacementNamed(
                 context,
-                FoodGallery.route,
+                FoodGallery.routeName,
               );
             },
           ),
@@ -80,8 +102,17 @@ class MainDrawer extends StatelessWidget {
             fun: () {
               Navigator.pushReplacementNamed(
                 context,
-                FeedbackScreen.route,
+                FeedbackScreen.routeName,
               );
+            },
+          ),
+          _showTiles(
+            title: 'Logout',
+            icon: Icons.exit_to_app_sharp,
+            fun: () {
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/');
+              Provider.of<AuthProvider>(context, listen: false).doLogout();
             },
           ),
         ],

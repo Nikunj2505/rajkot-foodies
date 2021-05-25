@@ -10,7 +10,7 @@ import '../providers/food_gallery_providers.dart';
 import '../widgets/main_drawer.dart';
 
 class FoodGallery extends StatelessWidget {
-  static const String route = "/food-gallery";
+  static const String routeName = "/food-gallery";
 
   const FoodGallery({Key? key}) : super(key: key);
 

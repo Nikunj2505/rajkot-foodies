@@ -67,7 +67,7 @@ class MealsListItem extends StatelessWidget {
   }
 
   void _moveToDetailScreen(BuildContext ctx) {
-    Navigator.pushNamed(ctx, MealsDetailsScreen.route, arguments: id);
+    Navigator.pushNamed(ctx, MealsDetailsScreen.routeName, arguments: id);
   }
 
   @override

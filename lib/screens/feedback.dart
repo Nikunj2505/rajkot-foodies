@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../widgets/main_drawer.dart';
 
 class FeedbackScreen extends StatefulWidget {
-  static const String route = '/feedback';
+  static const String routeName = '/feedback';
 
   @override
   _FeedbackScreenState createState() => _FeedbackScreenState();
