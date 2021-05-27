@@ -20,8 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  const Color(0xFF3366FF),
-                  const Color(0xFF00CCFF),
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -44,14 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       transform: Matrix4.rotationZ(-0.25)..translate(-10.0),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       margin: EdgeInsets.only(
                         bottom: 15,
                       ),
                       child: Text(
-                        'Rajkot foodies',
+                        'Foodies',
                         style: TextStyle(
                           fontSize: 30,
                           color: Colors.white,

@@ -18,6 +18,9 @@ class _AuthCardState extends State<AuthCard> {
   String? _email;
   String? _password;
   bool _isLoading = false;
+  bool _isSignIn = true;
+  static const String _TXT_LOGIN = 'Login';
+  static const String _TXT_REGISTER = 'Register';
 
   void _showToastMessage(String message) {
     Fluttertoast.showToast(
@@ -30,7 +33,7 @@ class _AuthCardState extends State<AuthCard> {
     );
   }
 
-  Future<void> _signIn() async {
+  Future<void> _authenticate() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -43,9 +46,15 @@ class _AuthCardState extends State<AuthCard> {
     });
 
     try {
-      await Provider.of<AuthProvider>(context, listen: false)
-          .doSignIn(_email!, _password!);
-      _showToastMessage('You are logged in successfully!');
+      if (_isSignIn) {
+        await Provider.of<AuthProvider>(context, listen: false)
+            .doSignIn(_email!, _password!);
+        _showToastMessage('You are logged in successfully!');
+      } else {
+        await Provider.of<AuthProvider>(context, listen: false)
+            .doSignUp(_email!, _password!);
+        _showToastMessage('You are now registered!');
+      }
     } on CustomHttpException catch (error) {
       var message = 'Not able to logged in!';
       if (error.toString().contains('EMAIL_NOT_FOUND')) {
@@ -79,6 +88,34 @@ class _AuthCardState extends State<AuthCard> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _TXT_REGISTER,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                Switch(
+                  activeColor: Colors.black,
+                  value: _isSignIn,
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _isSignIn = value;
+                      },
+                    );
+                  },
+                ),
+                Text(
+                  _TXT_LOGIN,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
             Container(
               margin: const EdgeInsets.symmetric(
                 vertical: 10,
@@ -86,9 +123,9 @@ class _AuthCardState extends State<AuthCard> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(
-                color: Colors.deepPurpleAccent,
+                color: Colors.white,
                 border: Border.all(
-                  color: Colors.deepPurple,
+                  color: Colors.white,
                 ),
                 borderRadius: BorderRadius.circular(
                   10,
@@ -108,13 +145,13 @@ class _AuthCardState extends State<AuthCard> {
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   fontStyle: FontStyle.italic,
                 ),
-                cursorColor: Colors.white,
+                cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.blueGrey,
                   ),
                   hintText: 'email',
                   border: InputBorder.none,
@@ -128,9 +165,9 @@ class _AuthCardState extends State<AuthCard> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               decoration: BoxDecoration(
-                color: Colors.deepPurpleAccent,
+                color: Colors.white,
                 border: Border.all(
-                  color: Colors.deepPurple,
+                  color: Colors.white,
                 ),
                 borderRadius: BorderRadius.circular(
                   10,
@@ -139,7 +176,7 @@ class _AuthCardState extends State<AuthCard> {
               child: TextFormField(
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
-                    return 'please enter password';
+                    return 'password length must not be less than 6 char';
                   }
                   return null;
                 },
@@ -147,13 +184,13 @@ class _AuthCardState extends State<AuthCard> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   fontStyle: FontStyle.italic,
                 ),
-                cursorColor: Colors.white,
+                cursorColor: Theme.of(context).primaryColor,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.blueGrey,
                   ),
                   hintText: 'password',
                   border: InputBorder.none,
@@ -164,19 +201,27 @@ class _AuthCardState extends State<AuthCard> {
               ),
             ),
             _isLoading
-                ? CircularProgressIndicator()
+                ? Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 10,
+                    ),
+                    child: CircularProgressIndicator(),
+                  )
                 : Container(
                     width: double.infinity,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 10,
+                    ),
                     child: ElevatedButton(
-                      child: Text('Sign In'),
+                      child: Text(_isSignIn ? _TXT_LOGIN : _TXT_REGISTER),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.only(
-                          top: 10,
+                          top: 12,
                           bottom: 10,
                         ),
-                        primary: Colors.deepOrange,
+                        primary: Theme.of(context).primaryColor,
                         onPrimary: Colors.white,
                         textStyle: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -186,7 +231,7 @@ class _AuthCardState extends State<AuthCard> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      onPressed: () => _signIn(),
+                      onPressed: () => _authenticate(),
                     ),
                   ),
           ],

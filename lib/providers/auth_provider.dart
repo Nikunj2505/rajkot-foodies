@@ -77,12 +77,7 @@ class AuthProvider with ChangeNotifier {
       } else if (response.statusCode == 400) {
         final error = jsonDecode(response.body);
         debugPrint('$error');
-        // do auto sign up if new email address.
-        if (error['error']['message'] == 'EMAIL_NOT_FOUND') {
-          await doSignUp(email, password);
-        } else {
-          throw CustomHttpException(error['error']['message']);
-        }
+        throw CustomHttpException(error['error']['message']);
       }
     } catch (error) {
       throw error;
