@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodies/helper/custom_http_exception.dart';
 import 'package:provider/provider.dart';
 
+import '../helper/custom_http_exception.dart';
 import '../providers/auth_provider.dart';
 
 class AuthCard extends StatefulWidget {
@@ -33,10 +33,21 @@ class _AuthCardState extends State<AuthCard> {
     );
   }
 
+  Future<void> _signInWithGoogle() async {
+    final isLoggedIn = await Provider.of<AuthProvider>(context, listen: false)
+        .doSignInWithGoogle();
+    if (isLoggedIn) {
+      _showToastMessage('You are logged in successfully!');
+    } else {
+      _showToastMessage('Sorry, Something went wrong!');
+    }
+  }
+
   Future<void> _authenticate() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
     if (_email == null || _password == null) {
       return;
@@ -231,9 +242,40 @@ class _AuthCardState extends State<AuthCard> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                       ),
-                      onPressed: () => _authenticate(),
+                      onPressed: _authenticate,
                     ),
                   ),
+            if (!_isLoading)
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 10,
+                ),
+                child: ElevatedButton(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    children: [
+                      Image.asset(
+                        'assets/images/google_logo.png',
+                        width: 30,
+                        height: 30,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'Login with Google',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  onPressed: _signInWithGoogle,
+                ),
+              ),
           ],
         ),
       ),
