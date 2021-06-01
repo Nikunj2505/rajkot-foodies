@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -108,6 +109,61 @@ class AuthProvider with ChangeNotifier {
       ),
     );
   }
+
+// --------------------- Google Sign in ----------------------------------------
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+    'email',
+  ]);
+
+  Future<bool> doSignInWithGoogle() async {
+    try {
+      final googleSignInAcc = await _googleSignIn.signIn();
+      if (googleSignInAcc != null) {
+        debugPrint(googleSignInAcc.id);
+        debugPrint(googleSignInAcc.email);
+        debugPrint(googleSignInAcc.displayName);
+        debugPrint(googleSignInAcc.photoUrl);
+        final auth = await googleSignInAcc.authentication;
+        debugPrint(auth.idToken);
+        debugPrint(auth.accessToken);
+
+        // save info to preferences
+        _idToken = googleSignInAcc.id;
+        _userId = googleSignInAcc.id;
+        _emailAddress = googleSignInAcc.email;
+        // adding 1 day as expiration time..
+        // this can be change as per requirement
+        _expiredAt = DateTime.now().add(
+          Duration(seconds: (24 * 60)),
+        );
+        notifyListeners();
+        final preference = await SharedPreferences.getInstance();
+        preference.setString(
+          'userData',
+          jsonEncode(
+            {
+              'token': _idToken!,
+              'userId': _userId!,
+              'email': _emailAddress!,
+              'expiredAt': _expiredAt!.toIso8601String(),
+            },
+          ),
+        );
+
+        return true;
+      }
+    } catch (error) {
+      print(error);
+      return false;
+    }
+    return false;
+  }
+
+  Future<GoogleSignInAccount?> doSignOutWithGoogle() async {
+    return await _googleSignIn.signOut();
+  }
+
+  // ---------------------------------------------------------------------------
 
   Future<void> doLogout() async {
     _idToken = null;
